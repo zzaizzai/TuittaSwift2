@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct PostRowView : View {
+    
+    @EnvironmentObject var page: PageControl
+    
+    @State private var showDetail = false
     var body: some View {
         HStack(alignment: .top){
             
@@ -27,12 +31,21 @@ struct PostRowView : View {
             }
             
             Spacer()
+            
+            
+            NavigationLink("", isActive: $page.showDetailIndex0) {
+                Text("show detail page")
+            }
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(Color.init(white: 0.9))
         .overlay(Rectangle().frame(height: 1).foregroundColor(.init(white: 0.8)), alignment: .bottom)
         .overlay(Rectangle().frame(height: 1).foregroundColor(.init(white: 0.8)), alignment: .top)
+        .onTapGesture {
+            page.showDetailIndex0 = true
+            
+        }
         
         
     }
