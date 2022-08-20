@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var auth : AuthViewModel
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+//        if auth.isLogged {
+        ZStack{
+            MainTabView()
+            
+        }.fullScreenCover(isPresented: $auth.isLoggedOut) {
+            LoginView()
+            
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .font(.body.bold())
+            .environmentObject(PageControl())
+            .environmentObject(AuthViewModel())
     }
 }

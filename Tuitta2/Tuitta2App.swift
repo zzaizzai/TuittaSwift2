@@ -12,6 +12,9 @@ struct Tuitta2App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(PageControl())
+                .environmentObject(AuthViewModel())
+                .font(.body.bold())
         }
     }
 }
