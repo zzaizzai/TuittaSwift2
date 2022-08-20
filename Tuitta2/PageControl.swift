@@ -8,18 +8,35 @@
 import Foundation
 
 class PageControl : ObservableObject {
-    //PostPage
-    @Published var showPostIndex0 = false
+    
+    @Published var showSideMenu = false
+    
+    
+    //index 0
+    @Published var showDetailIndex0 = false
     @Published var showUserProfileIndex0 = false
-    @Published var count1 = 0
+    @Published var showMyProfileIndex0 = false
+    @Published var countIndex0 = 0
+    
     
     
     //
     
     func resetPage(index : Int) {
         if index == 0{
-            self.showPostIndex0 = false
+            if self.showDetailIndex0 || self.showUserProfileIndex0 || self.showMyProfileIndex0 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.countIndex0 += 1
+                }
+            } else {
+                self.countIndex0 += 1
+            }
+            
+            self.showDetailIndex0 = false
             self.showUserProfileIndex0 = false
+            self.showMyProfileIndex0 = false
+            
+
         }
         if index == 1 {
             
@@ -27,8 +44,5 @@ class PageControl : ObservableObject {
     }
     
     
-    func resetAllPages() {
-        self.showPostIndex0 = false
-    }
     
 }

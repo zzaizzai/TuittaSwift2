@@ -7,47 +7,54 @@
 
 import SwiftUI
 
+class MainPostsViewModel : ObservableObject {
+    @Published var count = 0
+}
+
 struct MainPostsView: View {
     @EnvironmentObject var page: PageControl
+    @ObservedObject var vm = MainPostsViewModel()
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
                 
                 
-                NavigationLink("", isActive: $page.showPostIndex0) {
-                    PostDetailView()
-                }
+//                NavigationLink("", isActive: $page.showPostIndex0) {
+//                    PostDetailView()
+//                }
                 
-                NavigationLink("", isActive: $page.showUserProfileIndex0) {
-                    Text("userpage")
-                }
                 
                 ScrollView {
                     
-                    VStack(spacing: 0){
+                    ScrollViewReader{ ScrollViewProxy in
                         
-                        Button {
-                            page.showUserProfileIndex0 = true
-                        } label: {
-                            Text("show user page")
+                        
+                        VStack{
+                            HStack{Spacer()}
+                                .id("Empty")
+                            
+                            VStack(spacing: 0){
+                                
+                                
+                                ForEach(0 ..< 100){ item in
+                                    PostRowView()
+                                }
+                                
+                            }
+                            .onReceive(page.$countIndex0) { xx in
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    ScrollViewProxy.scrollTo("Empty", anchor: .top)
+                                }
+                            }
                         }
+
+
                         
-                        Button {
-                            page.showPostIndex0 = true
-                        } label: {
-                            Text("show post detail")
-                        }
-                        
-                        PostRowView()
-                        PostRowView()
-                        PostRowView()
-                        PostRowView()
-                        PostRowView()
-                        PostRowView()
-                        PostRowView()
-                        
+
                     }
+
+
                 }
                 .navigationBarHidden(true)
                 .safeAreaInset(edge: .top) {
@@ -71,6 +78,7 @@ struct MainPostsView: View {
             
             Button {
                 self.showNewPost = true
+//                page.countIndex0 += 1
                 
             } label: {
                 Image(systemName: "plus")
@@ -89,12 +97,21 @@ struct MainPostsView: View {
     
     private var navbar : some View {
         HStack{
-            
+            Image(systemName: "person")
+                .resizable()
+                .background(Color.gray)
+                .frame(width: 30, height: 30)
+                .cornerRadius(100)
+                .padding()
+                .onTapGesture {
+                    withAnimation {
+                        page.showSideMenu = true
+                    }
+                }
             
             Spacer()
             
-            Text("navbar")
-            Spacer()
+            Text(page.countIndex0.description)
         }
         .frame(height: 40)
         .background(Color.white.opacity(0.9))

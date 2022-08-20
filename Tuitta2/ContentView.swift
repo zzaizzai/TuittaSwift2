@@ -9,17 +9,68 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @EnvironmentObject var page : PageControl
     @EnvironmentObject var auth : AuthViewModel
     
+    @State var showSideMenu = false
     var body: some View {
 //        if auth.isLogged {
         ZStack{
-            MainTabView()
+            mainview
+            
+            
+
+            Button {
+                withAnimation {
+                    page.showSideMenu.toggle()
+                }
+            } label: {
+                Text(page.showSideMenu.description)
+            }
+            .offset( y: 50)
+
             
         }.fullScreenCover(isPresented: $auth.isLoggedOut) {
             LoginView()
             
         }
+    }
+    
+    private var mainview : some View {
+        ZStack(alignment: .leading) {
+            
+            
+            MainTabView()
+            .zIndex(1)
+            .background(Color.black)
+            .offset( x: page.showSideMenu ? 250 : 0)
+            
+            sidemenu
+                .offset(x: page.showSideMenu ? 0 : -250)
+                .zIndex(2)
+            
+            
+            HStack{
+                VStack{
+                    Spacer()
+                }
+                Spacer()
+            }
+            .background(Color.black)
+            .opacity(page.showSideMenu ? 0.8 : 0)
+            .zIndex(page.showSideMenu ? 1 : -0)
+            .onTapGesture {
+                withAnimation {
+                    page.showSideMenu = false
+                }
+            }
+        }
+    }
+    
+    private var sidemenu : some View {
+        
+        SideMenuView()
+        
     }
     
 }
