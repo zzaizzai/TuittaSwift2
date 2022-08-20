@@ -10,6 +10,7 @@ import Foundation
 class PageControl : ObservableObject {
     //PostPage
     @Published var showPostIndex0 = false
+    @Published var showUserProfileIndex0 = false
     @Published var count1 = 0
     
     
@@ -18,6 +19,7 @@ class PageControl : ObservableObject {
     func resetPage(index : Int) {
         if index == 0{
             self.showPostIndex0 = false
+            self.showUserProfileIndex0 = false
         }
         if index == 1 {
             

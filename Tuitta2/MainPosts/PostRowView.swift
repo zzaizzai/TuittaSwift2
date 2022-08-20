@@ -11,11 +11,12 @@ struct PostRowView : View {
     var body: some View {
         HStack(alignment: .top){
             
-            Image(systemName: "person")
-                .resizable()
-                .background(Color.gray)
-                .frame(width: 50, height: 50)
-                .cornerRadius(100)
+//            Image(systemName: "person")
+//                .resizable()
+//                .background(Color.gray)
+//                .frame(width: 50, height: 50)
+//                .cornerRadius(100)
+            ProfileImageView()
             
             VStack(alignment: .leading) {
                 HStack{
@@ -39,7 +40,10 @@ struct PostRowView : View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostRowView()
+        NavigationView {
+            PostRowView()
+                .environmentObject(PageControl())
             .font(.body.bold())
+        }
     }
 }
