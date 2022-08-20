@@ -9,15 +9,35 @@ import SwiftUI
 
 struct MainPostsView: View {
     @EnvironmentObject var page: PageControl
-    @State private var showProfile = false
-    
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-    
-            NavigationView {
+        NavigationView {
+            ZStack(alignment: .bottomTrailing) {
+                
+                
+                NavigationLink("", isActive: $page.showPostIndex0) {
+                    PostDetailView()
+                }
+                
+                NavigationLink("", isActive: $page.showUserProfileIndex0) {
+                    Text("userpage")
+                }
+                
                 ScrollView {
+                    
                     VStack(spacing: 0){
+                        
+                        Button {
+                            page.showUserProfileIndex0 = true
+                        } label: {
+                            Text("show user page")
+                        }
+                        
+                        Button {
+                            page.showPostIndex0 = true
+                        } label: {
+                            Text("show post detail")
+                        }
                         
                         PostRowView()
                         PostRowView()
@@ -36,10 +56,10 @@ struct MainPostsView: View {
                 .fullScreenCover(isPresented: $showNewPost) {
                     NewPostView()
                 }
+                
+                
+                newPostButton
             }
-
-            
-            newPostButton
         }
     }
     
@@ -49,24 +69,22 @@ struct MainPostsView: View {
         
         ZStack{
             
-                Button {
-                    self.showNewPost = true
-                    
-                } label: {
-                    Image(systemName: "plus")
-                    
-                }
-                .foregroundColor(Color.white)
-                .font(.system(size: 30))
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(100)
-                .padding()
-                .offset( y: -20)
+            Button {
+                self.showNewPost = true
+                
+            } label: {
+                Image(systemName: "plus")
+                
+            }
+            .foregroundColor(Color.white)
+            .font(.system(size: 30))
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(100)
+            .padding()
+            .offset( y: -20)
             
         }
-        
-        
     }
     
     private var navbar : some View {
