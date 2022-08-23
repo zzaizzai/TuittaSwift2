@@ -20,11 +20,6 @@ struct MainPostsView: View {
             ZStack(alignment: .bottomTrailing) {
                 
                 
-//                NavigationLink("", isActive: $page.showPostIndex0) {
-//                    PostDetailView()
-//                }
-                
-                
                 ScrollView {
                     
                     ScrollViewReader{ ScrollViewProxy in
@@ -48,13 +43,8 @@ struct MainPostsView: View {
                                 }
                             }
                         }
-
-
                         
-
                     }
-
-
                 }
                 .navigationBarHidden(true)
                 .safeAreaInset(edge: .top) {
@@ -78,7 +68,7 @@ struct MainPostsView: View {
             
             Button {
                 self.showNewPost = true
-//                page.countIndex0 += 1
+                //                page.countIndex0 += 1
                 
             } label: {
                 Image(systemName: "plus")
@@ -120,13 +110,13 @@ struct MainPostsView: View {
 }
 
 
-
-struct MainPostView_Previews: PreviewProvider {
-    static var previews: some View {
-        //        MainPostsView()
-        ContentView()
-            .font(.body.bold())
-            .environmentObject(PageControl())
-            .environmentObject(AuthViewModel())
-    }
-}
+//
+//struct MainPostView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        //        MainPostsView()
+//        ContentView()
+//            .font(.body.bold())
+//            .environmentObject(PageControl())
+//            .environmentObject(AuthViewModel())
+//    }
+//}

@@ -23,8 +23,11 @@ struct MainTabView: View {
             MainPostsView()
                 .tabItem {
                     Image(systemName: "house")
+                        .padding()
+                        .background(Color.green)
                 }
                 .tag(0)
+
             
             ExploreView()
                 .tabItem {
@@ -36,7 +39,7 @@ struct MainTabView: View {
                 .tabItem {
                     Image(systemName: "bell")
                 }
-                .tag(2)
+//                .tag(2)
             
             RecentMessagesView()
                 .tabItem {
@@ -45,13 +48,17 @@ struct MainTabView: View {
                 .tag(3)
         }
         .accentColor(Color.black)
-        .onTapGesture(count: 2) {
-            if self.tabIndex == 0 {
-                page.resetPage(index: 0)
-            }
-                
-
-        }
+//        .onTapGesture(count: 2) {
+//            if self.tabIndex == 0 {
+//                page.resetPage(index: 0)
+//            }
+//
+//            if self.tabIndex == 3 {
+//                page.resetPage(index: 3)
+//            }
+//
+//
+//        }
     }
 }
 

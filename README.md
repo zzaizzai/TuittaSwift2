@@ -8,4 +8,3 @@ Im trying to build a app what we can use it instinctively
 functional simple UI
 
 
-when you doubletap a tab menu what you are chosing, the view return to the initial view of the tab
