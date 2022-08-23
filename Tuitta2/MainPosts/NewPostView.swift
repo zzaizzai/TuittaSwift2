@@ -6,16 +6,24 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 class NewPostViewModel : ObservableObject {
     
     @Published var uploadText = "11"
 }
 
+
 struct NewPostView: View {
+    
+    @FocusState var focusState
     
     @ObservedObject var vm = NewPostViewModel()
     @Environment(\.dismiss) var dismiss
+    
+    
+    @State private var uploadImage : UIImage?
+    @State private var showImagePicker = false
     
     var body: some View {
         VStack{
@@ -29,14 +37,50 @@ struct NewPostView: View {
                     
                     LazyVStack(alignment: .leading){
                         TextEditor(text: $vm.uploadText)
-                            .frame(height: 400)
-                            
+                        //                            .frame(height: )
+                            .focused($focusState)
+                        
+                        
+                        if let uploadImage = uploadImage {
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: uploadImage)
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                    .cornerRadius(20)
+                                
+                                Button {
+                                    self.uploadImage = nil
+                                } label: {
+                                    Text("X")
+                                        .zIndex(1)
+                                        .frame(width: 30, height: 30)
+                                        .background(Color.white)
+                                        .cornerRadius(100)
+                                }
+                            }
+                        } else {
+                            Button {
+                                showImagePicker = true
+                            } label: {
+                                Text("+photo")
+                                    .foregroundColor(Color.black)
+                                    .cornerRadius(20)
+                            }
+                        }
+                        
                     }
                     
                 }
                 .padding(.horizontal, 5)
                 
             }
+            .fullScreenCover(isPresented: $showImagePicker, content: {
+                ImagePicker(selectedImage: $uploadImage)
+            })
+            .onTapGesture {
+                self.focusState = true
+            }
+            
             
             
         }
@@ -83,7 +127,7 @@ struct NewPostView: View {
                 .padding(.horizontal, 10)
             }
             
-
+            
         }
         .frame(height: 40)
         .background(Color.gray)

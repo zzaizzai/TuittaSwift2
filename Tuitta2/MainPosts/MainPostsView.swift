@@ -110,13 +110,13 @@ struct MainPostsView: View {
 }
 
 
-//
-//struct MainPostView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        //        MainPostsView()
-//        ContentView()
-//            .font(.body.bold())
-//            .environmentObject(PageControl())
-//            .environmentObject(AuthViewModel())
-//    }
-//}
+
+struct MainPostView_Previews: PreviewProvider {
+    static var previews: some View {
+        //        MainPostsView()
+        ContentView()
+            .font(.body.bold())
+            .environmentObject(PageControl())
+            .environmentObject(AuthViewModel())
+    }
+}

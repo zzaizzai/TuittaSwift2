@@ -8,9 +8,6 @@
 import SwiftUI
 
 
-class pagesViewModel : ObservableObject {
-    @Published var tabindex = 0
-}
 
 struct ContentView: View {
     
@@ -21,18 +18,6 @@ struct ContentView: View {
     var body: some View {
             ZStack{
                 mainview
-                
-                
-                
-                Button {
-                    withAnimation {
-                        page.showSideMenu.toggle()
-                    }
-                } label: {
-                    Text(page.showSideMenu.description)
-                }
-                .offset( y: 50)
-                
                 
             }.fullScreenCover(isPresented: $auth.isLoggedOut) {
                 LoginView()
@@ -45,8 +30,8 @@ struct ContentView: View {
         ZStack(alignment: .leading) {
             
             
-//            MainTabView2()
-            maintabview
+            MainTabView()
+//            maintabview
             .zIndex(1)
             .offset( x: page.showSideMenu ? 250 : 0)
             
@@ -77,46 +62,6 @@ struct ContentView: View {
         SideMenuView()
         
     }
-    
-    @State var tabIndex = 0
-    
-    private var maintabview : some View {
-        ZStack{
-            if vmpage.tabindex == 0 {
-                MainPostsView()
-            } else if vmpage.tabindex == 1 {
-                ExploreView()
-            }
-        }
-        .safeAreaInset(edge: .bottom) {
-            tabmenu
-        }
-    }
-    
-    @ObservedObject var vmpage = pagesViewModel()
-    
-    private var tabmenu : some View {
-        
-        HStack{
-            Spacer()
-            Image(systemName: "person.fill")
-                .onTapGesture {
-                    vmpage.tabindex = 0
-                }
-            Spacer()
-            Image(systemName: "person.fill")
-                .onTapGesture {
-                    vmpage.tabindex = 1
-                }
-            Spacer()
-            Image(systemName: "person.fill")
-            Spacer()
-            Image(systemName: "person.fill")
-            Spacer()
-        }
-        .background(Color.white)
-    }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
