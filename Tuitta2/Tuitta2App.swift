@@ -6,9 +6,18 @@
 //
 //
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 @main
 struct Tuitta2App: App {
+    @StateObject var vmAuth = AuthViewModel()
+    @StateObject var page = PageControl()
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

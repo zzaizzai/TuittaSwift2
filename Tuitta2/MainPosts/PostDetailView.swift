@@ -6,39 +6,53 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 class PostDetailViewModel : ObservableObject {
-    @Published var chatText = ""
+    @Published var commentText = ""
 }
 
 struct PostDetailView: View {
     
+    var post : Post?
+    
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject var vm = PostDetailViewModel()
+    
     var body: some View {
         ScrollView{
             VStack(alignment: .leading) {
                 HStack{
-                    Image(systemName: "person")
-                        .resizable()
-                        .background(Color.gray)
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(100)
+                    
+                    if let profileUrl = post?.user?.profileImageUrl {
+                        WebImage(url: URL(string: profileUrl))
+                            .resizable()
+                            .background(Color.gray)
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(100)
+                    } else {
+                        Image(systemName: "person")
+                            .resizable()
+                            .background(Color.gray)
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(100)
+                    }
+
                     VStack(alignment: .leading) {
                         HStack{
-                            Text("name")
+                            Text(self.post?.user?.name ?? "name")
                             Spacer()
                             
                             Text("...")
                         }
-                        Text("email")
+                        Text(self.post?.user?.email ?? "email")
                     }
                     
                     
                 }
                 
-                Text("content content content content content content")
+                Text(self.post?.postText ?? "content content content content content content")
                     .font(.title2.bold())
             }
             .padding(.horizontal)
@@ -73,7 +87,7 @@ struct PostDetailView: View {
     private var bottomview : some View {
         
         HStack{
-            TextField("chat", text: $vm.chatText)
+            TextField("comment", text: $vm.commentText)
                 .padding(.vertical, 10)
                 .padding(.horizontal, 10)
                 .background(Color.init(white: 0.8))

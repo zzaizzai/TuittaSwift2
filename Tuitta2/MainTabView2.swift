@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct MainTabView2: View {
+    @EnvironmentObject var page : PageControl
     @State var index = 0
     var body: some View {
         ZStack{
-            if self.index == 0 {
+            switch page.tabIndex {
+            case 0 :
                 MainPostsView()
-            } else {
+            case 1 :
                 ExploreView()
+            
+            default:
+                MainPostsView()
             }
+            
         }
         .safeAreaInset(edge: .bottom) {
             tabbar
@@ -24,15 +30,17 @@ struct MainTabView2: View {
     
     private var tabbar : some View {
         HStack{
+            Spacer()
             Image(systemName: "person")
                 .onTapGesture {
-                    self.index = 0
+                    page.tabIndex = 0
                 }
             Spacer()
             Image(systemName: "person")
                 .onTapGesture {
-                    self.index = 1
+                    page.tabIndex = 1
                 }
+            Spacer()
         }
         .background(Color.white)
     }

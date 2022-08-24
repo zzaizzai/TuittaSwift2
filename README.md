@@ -3,8 +3,9 @@
 
 ## studying project
 
-Im trying to build a app what we can use it instinctively
+Im trying to build a app what we can use it instinctively   
 
-functional simple UI
+functional simple UI   
 
 
+improving UI and functionalities from previous studying project (https://github.com/zzaizzai/TuittaSwift)

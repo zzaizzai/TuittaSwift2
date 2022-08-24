@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Firebase
 
 class MainPostsViewModel : ObservableObject {
     @Published var count = 0
+    
 }
 
 struct MainPostsView: View {
@@ -33,7 +35,7 @@ struct MainPostsView: View {
                                 
                                 
                                 ForEach(0 ..< 100){ item in
-                                    PostRowView()
+                                    PostRowView(post: nil)
                                 }
                                 
                             }
