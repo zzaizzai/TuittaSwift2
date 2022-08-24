@@ -11,6 +11,8 @@ struct PostRowView : View {
     
     @EnvironmentObject var page: PageControl
     
+    var post : Post?
+    
     @State private var showDetail = false
     var body: some View {
         HStack(alignment: .top){
@@ -28,6 +30,19 @@ struct PostRowView : View {
                     Text("email")
                 }
                 Text("text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text")
+                
+                HStack{
+                    Image(systemName: "message")
+                    Text("22")
+                    Spacer()
+                    Image(systemName: "arrow.2.squarepath")
+                    Text("22")
+                    Spacer()
+                    Image(systemName: "heart")
+                    Text("22")
+                    Spacer()
+                }
+                
             }
             
             Spacer()
@@ -54,7 +69,7 @@ struct PostRowView : View {
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PostRowView()
+            PostRowView(post: nil)
                 .environmentObject(PageControl())
             .font(.body.bold())
         }

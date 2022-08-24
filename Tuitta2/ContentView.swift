@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct ContentView: View {
     
     @EnvironmentObject var page : PageControl
@@ -14,35 +16,23 @@ struct ContentView: View {
     
     @State var showSideMenu = false
     var body: some View {
-//        if auth.isLogged {
-        ZStack{
-            mainview
-            
-            
-
-            Button {
-                withAnimation {
-                    page.showSideMenu.toggle()
-                }
-            } label: {
-                Text(page.showSideMenu.description)
+            ZStack{
+                mainview
+                
+            }.fullScreenCover(isPresented: $auth.isLoggedOut) {
+                LoginView()
+                
             }
-            .offset( y: 50)
-
-            
-        }.fullScreenCover(isPresented: $auth.isLoggedOut) {
-            LoginView()
-            
-        }
     }
+
     
     private var mainview : some View {
         ZStack(alignment: .leading) {
             
             
             MainTabView()
+//            maintabview
             .zIndex(1)
-            .background(Color.black)
             .offset( x: page.showSideMenu ? 250 : 0)
             
             sidemenu
@@ -72,7 +62,6 @@ struct ContentView: View {
         SideMenuView()
         
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {

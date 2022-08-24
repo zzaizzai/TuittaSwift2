@@ -9,6 +9,8 @@ import Foundation
 
 class PageControl : ObservableObject {
     
+    @Published var tabIndex = 0
+    
     @Published var showSideMenu = false
     
     
@@ -18,6 +20,8 @@ class PageControl : ObservableObject {
     @Published var showMyProfileIndex0 = false
     @Published var countIndex0 = 0
     
+    @Published var showMyProfileIndex3 = false
+    
     
     
     //
@@ -25,7 +29,7 @@ class PageControl : ObservableObject {
     func resetPage(index : Int) {
         if index == 0{
             if self.showDetailIndex0 || self.showUserProfileIndex0 || self.showMyProfileIndex0 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.countIndex0 += 1
                 }
             } else {
@@ -40,6 +44,10 @@ class PageControl : ObservableObject {
         }
         if index == 1 {
             
+        }
+        
+        if index == 3 {
+            self.showMyProfileIndex3 = false
         }
     }
     

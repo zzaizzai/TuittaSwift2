@@ -3,9 +3,9 @@
 
 ## studying project
 
-Im trying to build a app what we can use it instinctively
+Im trying to build a app what we can use it instinctively   
 
-functional simple UI
+functional simple UI   
 
 
-when you doubletap a tab menu what you are chosing, the view return to the initial view of the tab
+improving UI and functionalities from previous studying project (https://github.com/zzaizzai/TuittaSwift)

@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Firebase
 
 class MainPostsViewModel : ObservableObject {
     @Published var count = 0
+    
 }
 
 struct MainPostsView: View {
@@ -18,11 +20,6 @@ struct MainPostsView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
-                
-                
-//                NavigationLink("", isActive: $page.showPostIndex0) {
-//                    PostDetailView()
-//                }
                 
                 
                 ScrollView {
@@ -38,7 +35,7 @@ struct MainPostsView: View {
                                 
                                 
                                 ForEach(0 ..< 100){ item in
-                                    PostRowView()
+                                    PostRowView(post: nil)
                                 }
                                 
                             }
@@ -48,13 +45,8 @@ struct MainPostsView: View {
                                 }
                             }
                         }
-
-
                         
-
                     }
-
-
                 }
                 .navigationBarHidden(true)
                 .safeAreaInset(edge: .top) {
@@ -78,7 +70,7 @@ struct MainPostsView: View {
             
             Button {
                 self.showNewPost = true
-//                page.countIndex0 += 1
+                //                page.countIndex0 += 1
                 
             } label: {
                 Image(systemName: "plus")
