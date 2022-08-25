@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ProfileImageView: View {
     @EnvironmentObject var page: PageControl
+    
+    let profileImageUrl : String?
     
     @State private var showUserProfile = false
     var body: some View {
@@ -16,15 +19,31 @@ struct ProfileImageView: View {
             NavigationLink("", isActive: $page.showUserProfileIndex0) {
                 Text("user profile from image")
             }
-
-            Image(systemName: "person")
-                .resizable()
-                .background(Color.gray)
-                .frame(width: 50, height: 50)
-                .cornerRadius(100)
-                .onTapGesture {
-                    page.showUserProfileIndex0 = true
+            
+            ZStack{
+                
+                if let profileImageUrl = profileImageUrl {
+                    WebImage(url: URL(string: profileImageUrl))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(100)
+                } else {
+                    Image(systemName: "person")
+                        .resizable()
+                        .background(Color.gray)
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(100)
                 }
+
+                
+            }
+            .onTapGesture {
+                page.showUserProfileIndex0 = true
+            }
+
+
+
         }
     }
 }
@@ -32,7 +51,7 @@ struct ProfileImageView: View {
 struct ProfileImageView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            ProfileImageView()
+            ProfileImageView(profileImageUrl: nil)
                 .environmentObject(PageControl())
         }
     }

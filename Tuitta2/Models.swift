@@ -33,7 +33,7 @@ struct Post: Identifiable, Codable {
     var id : String { documentId }
     
     let documentId: String
-    let userUid : String
+    let authorUid : String
     let postImageUrl, postText: String
     let time: Date
     var likes: Int
@@ -44,7 +44,7 @@ struct Post: Identifiable, Codable {
     
     init(documentId: String, data: [String:Any] ) {
         self.documentId = documentId
-        self.userUid = data["userUid"] as? String ?? "no userUid"
+        self.authorUid = data["authorUid"] as? String ?? "no authorUid"
         
         self.postText = data["postText"] as? String ?? "no postText"
         self.postImageUrl = data["postImageUrl"] as? String ?? "no postImageUrl"
