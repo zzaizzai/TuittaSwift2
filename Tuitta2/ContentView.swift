@@ -20,7 +20,7 @@ struct ContentView: View {
         if auth.userSession == nil {
             LoginView()
         } else {
-            self.mainview
+            MainTabView()
         }
         
     }

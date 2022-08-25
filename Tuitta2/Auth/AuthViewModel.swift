@@ -16,6 +16,12 @@ class AuthViewModel : ObservableObject {
     
     @Published var userSession : FirebaseAuth.User?
     
+    
+    init() {
+        self.userSession = Auth.auth().currentUser
+        self.fetchUserData { _ in
+        }
+    }
     func login(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {

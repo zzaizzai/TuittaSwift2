@@ -7,10 +7,96 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Firebase
 
 class NewPostViewModel : ObservableObject {
     
-    @Published var uploadText = "11"
+    @Published var uploadText = ""
+    @Published var uploadImage : UIImage?
+    @Published var errorMessage = "error"
+    
+    
+    
+    func uplaodNewPost(done: @escaping(Bool)->()) {
+        
+        guard let user = Auth.auth().currentUser else { return }
+        
+        
+        let ref = Firestore.firestore().collection("posts").document()
+
+        let docId = ref.documentID
+//
+            let data = [
+
+                "authorUid" : user.uid,
+                "postText" : self.uploadText,
+                "postImageUrl": "",
+                "time" : Date(),
+            ] as [String:Any]
+        
+        
+        ref.setData(data) { error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            self.errorMessage = "\(docId)"
+            
+            self.storePostImage(docId: docId) { url in
+                if url == "" {
+                    self.errorMessage = "upload done with image"
+                    done(true)
+                    
+                } else {
+                    
+                    
+                    Firestore.firestore().collection("posts").document(docId).setData(["postImageUrl" : url ], merge: true) { error in
+                        if let error = error {
+                            print(error)
+                            return
+                        }
+                        self.errorMessage = "upload done without image"
+                        
+                        self.uploadText = ""
+                        self.uploadImage = nil
+                        done(true)
+                    }
+                }
+            }
+            
+            
+        }
+        
+    }
+    func storePostImage (docId: String, done: @escaping(String)->()) {
+        guard let _ = self.uploadImage else {
+            done("")
+            return }
+        
+        let ref = Storage.storage().reference(withPath: "posts/" + docId )
+        guard let imageData = self.uploadImage?.jpegData(compressionQuality: 0.5) else { return }
+        
+        ref.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            ref.downloadURL { url, error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
+                guard let postImageUrl = url?.absoluteString else { return }
+                
+                done(postImageUrl)
+                
+            }
+        }
+        
+        
+    }
 }
 
 
@@ -22,11 +108,11 @@ struct NewPostView: View {
     @Environment(\.dismiss) var dismiss
     
     
-    @State private var uploadImage : UIImage?
     @State private var showImagePicker = false
     
     var body: some View {
         VStack{
+            Text(vm.errorMessage)
             ScrollView{
                 HStack(alignment: .top){
                     Image(systemName: "person")
@@ -41,7 +127,7 @@ struct NewPostView: View {
                             .focused($focusState)
                         
                         
-                        if let uploadImage = uploadImage {
+                        if let uploadImage = vm.uploadImage {
                             ZStack(alignment: .topTrailing) {
                                 Image(uiImage: uploadImage)
                                     .resizable()
@@ -50,7 +136,7 @@ struct NewPostView: View {
                                     .cornerRadius(20)
                                 
                                 Button {
-                                    self.uploadImage = nil
+                                    vm.uploadImage = nil
                                 } label: {
                                     Text("X")
                                         .zIndex(1)
@@ -76,7 +162,7 @@ struct NewPostView: View {
                 
             }
             .fullScreenCover(isPresented: $showImagePicker, content: {
-                ImagePicker(selectedImage: $uploadImage)
+                ImagePicker(selectedImage: $vm.uploadImage)
             })
             .onTapGesture {
                 self.focusState = true
@@ -112,7 +198,11 @@ struct NewPostView: View {
                 
             } else {
                 Button {
-                    
+                    vm.uplaodNewPost { done in
+                        if done {
+                            dismiss()
+                        }
+                    }
                 } label: {
                     Text("Upload")
                         .foregroundColor(Color.white)

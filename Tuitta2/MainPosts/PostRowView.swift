@@ -19,12 +19,12 @@ class PostRowViewModel : ObservableObject {
     
     init(post: Post?){
         self.post = post
-        self.fetchDidLike(post: post)
+        self.checkDidLike(post: post)
         
     }
     
 
-    func fetchDidLike(post: Post?) {
+    func checkDidLike(post: Post?) {
         guard let userUid = Auth.auth().currentUser?.uid else { return }
         guard let post = post else { return }
         
@@ -34,10 +34,12 @@ class PostRowViewModel : ObservableObject {
                 return
             }
             
-            if let doc = snpashot {
-                print("liked \(doc.documentID)")
-                self.didLike = true
+            guard let _ = snpashot?.data() else {
+                self.didLike = false
+                return
             }
+            
+            self.didLike = true
             
         }
     }
