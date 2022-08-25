@@ -12,9 +12,9 @@ class PostRowViewModel : ObservableObject {
     @Published var post : Post?
     let service = Service()
     
-    var didLike = false
-    var comments : Int = 0
-    var rePost = false
+    @Published var didLike : Bool = false
+    @Published var comments : Int = 0
+    @Published var rePost = false
     
     
     init(post: Post?){
@@ -50,6 +50,7 @@ struct PostRowView : View {
     
     @EnvironmentObject var page: PageControl
     @ObservedObject var vm : PostRowViewModel
+    @State var showPostDetail = false
     
     var post : Post?
     
@@ -81,8 +82,22 @@ struct PostRowView : View {
                     Image(systemName: "arrow.2.squarepath")
                     Text("22")
                     Spacer()
-                    Image(systemName: "heart")
-                    Text("22")
+                    Button {
+                        vm.didLike.toggle()
+                    } label: {
+                        ZStack{
+                            Image(systemName: vm.didLike ? "heart.fill" : "heart")
+                                .zIndex(vm.didLike ? 0 : 1)
+                            
+                        }
+
+                        Text("22")
+                    }
+                    .foregroundColor(vm.didLike ? Color.red : Color.black)
+
+                    
+
+
                     Spacer()
                 }
                 
@@ -91,7 +106,7 @@ struct PostRowView : View {
             Spacer()
             
             
-            NavigationLink("", isActive: $page.showDetailIndex0) {
+            NavigationLink("", isActive: $showPostDetail) {
                 Text("show detail page")
             }
         }
@@ -101,7 +116,7 @@ struct PostRowView : View {
         .overlay(Rectangle().frame(height: 1).foregroundColor(.init(white: 0.8)), alignment: .bottom)
         .overlay(Rectangle().frame(height: 1).foregroundColor(.init(white: 0.8)), alignment: .top)
         .onTapGesture {
-            page.showDetailIndex0 = true
+            self.showPostDetail = true
             
         }
     }

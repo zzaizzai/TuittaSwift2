@@ -16,15 +16,15 @@ struct ContentView: View {
     
     @State var showSideMenu = false
     var body: some View {
-            ZStack{
-                mainview
-                
-            }.fullScreenCover(isPresented: $auth.isLoggedOut) {
-                LoginView()
-                
-            }
+        
+        if auth.userSession == nil {
+            LoginView()
+        } else {
+            self.mainview
+        }
+        
     }
-
+    
     
     private var mainview : some View {
         ZStack(alignment: .leading) {

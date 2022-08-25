@@ -6,13 +6,62 @@
 //
 
 import SwiftUI
+import Firebase
+
 
 struct LoginView: View {
     
     @EnvironmentObject var auth : AuthViewModel
+    
+    @State var email = "test@test.com"
+    @State var password = "password"
+    
     var body: some View {
         NavigationView{
             VStack{
+                
+                Group {
+                    TextField("email", text: $email)
+                    TextField("password", text: $password)
+                }
+                .padding()
+                .background(Color.init(white: 0.9))
+                .cornerRadius(20)
+                .padding()
+                
+                
+                if self.email.isEmpty || self.password.isEmpty {
+                    
+                    HStack{
+                        Spacer()
+                        Text("Log In")
+                            .foregroundColor(Color.init(white: 0.5))
+                            .padding()
+                        Spacer()
+                    }
+                    .background(Color.init(red: 0.3, green: 0.4, blue: 0.1))
+                    .cornerRadius(20)
+                    .padding()
+                    
+                } else {
+                    Button {
+                        auth.login(email: self.email, password: self.password)
+                    } label: {
+                        HStack{
+                            Spacer()
+                            Text("Log In")
+                                .foregroundColor(Color.white)
+                                .padding()
+                            Spacer()
+                        }
+                    }
+                    .background(Color.init(red: 0.3, green: 0.4, blue: 0.1))
+                    .cornerRadius(20)
+                    .padding()
+                }
+
+                
+                
                 Button {
                     auth.isLoggedOut = false
                 } label: {
