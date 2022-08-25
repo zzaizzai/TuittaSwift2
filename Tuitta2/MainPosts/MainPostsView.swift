@@ -10,7 +10,44 @@ import Firebase
 
 class MainPostsViewModel : ObservableObject {
     @Published var count = 0
+    @Published var posts = [Post]()
     
+    private let service = Service()
+    
+    
+    init(){
+        self.getPostsData()
+    }
+    
+    
+    func getPostsData() {
+        
+        Firestore.firestore().collection("posts").getDocuments { snapshot, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            snapshot?.documents.forEach { doc  in
+                let docId = doc.documentID
+                let data = doc.data()
+                
+                
+                self.posts.insert(.init(documentId: docId, data: data), at: 0)
+            }
+            
+            
+            for i in 0 ..< self.posts.count {
+                let uid = self.posts[i].authorUid
+                
+                self.service.getUserData(userUid: uid) { userData in
+                    self.posts[i].user = userData
+                }
+                
+            }
+            
+        }
+    }
 }
 
 struct MainPostsView: View {
@@ -34,8 +71,8 @@ struct MainPostsView: View {
                             VStack(spacing: 0){
                                 
                                 
-                                ForEach(0 ..< 100){ item in
-                                    PostRowView(post: nil)
+                                ForEach(vm.posts){ post in
+                                    PostRowView(post: post)
                                 }
                                 
                             }

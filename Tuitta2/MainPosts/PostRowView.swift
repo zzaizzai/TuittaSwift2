@@ -6,30 +6,73 @@
 //
 
 import SwiftUI
+import Firebase
+
+class PostRowViewModel : ObservableObject {
+    @Published var post : Post?
+    let service = Service()
+    
+    var didLike = false
+    var comments : Int = 0
+    var rePost = false
+    
+    
+    init(post: Post?){
+        self.post = post
+        self.fetchDidLike(post: post)
+        
+    }
+    
+
+    func fetchDidLike(post: Post?) {
+        guard let userUid = Auth.auth().currentUser?.uid else { return }
+        guard let post = post else { return }
+        
+        Firestore.firestore().collection("posts").document(post.id).collection("liked").document(userUid).getDocument { snpashot, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            if let doc = snpashot {
+                print("liked \(doc.documentID)")
+                self.didLike = true
+            }
+            
+        }
+    }
+
+    
+
+}
 
 struct PostRowView : View {
     
     @EnvironmentObject var page: PageControl
+    @ObservedObject var vm : PostRowViewModel
     
     var post : Post?
+    
+    init(post : Post?){
+        self.vm = PostRowViewModel(post: post)
+    }
+    
+    
     
     @State private var showDetail = false
     var body: some View {
         HStack(alignment: .top){
             
-//            Image(systemName: "person")
-//                .resizable()
-//                .background(Color.gray)
-//                .frame(width: 50, height: 50)
-//                .cornerRadius(100)
-            ProfileImageView()
+            ProfileImageView(profileImageUrl: vm.post?.user?.profileImageUrl ?? nil)
+//            post?.user?.profileImageUrl
             
             VStack(alignment: .leading) {
                 HStack{
-                    Text("name")
-                    Text("email")
+                    Text(vm.post?.user?.name ?? "name")
+                    Text(vm.post?.user?.email ?? "email")
+                        .foregroundColor(Color.gray)
                 }
-                Text("text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text")
+                Text(vm.post?.postText ?? "text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text")
                 
                 HStack{
                     Image(systemName: "message")
@@ -61,8 +104,6 @@ struct PostRowView : View {
             page.showDetailIndex0 = true
             
         }
-        
-        
     }
 }
 

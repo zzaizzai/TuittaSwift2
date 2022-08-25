@@ -12,6 +12,7 @@
 		A642438D28B4FEBD0067450F /* MainTabView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A642438C28B4FEBD0067450F /* MainTabView2.swift */; };
 		A642439028B512BD0067450F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = A642438F28B512BD0067450F /* SDWebImageSwiftUI */; };
 		A642439228B516750067450F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A642439128B516750067450F /* ImagePicker.swift */; };
+		A66BDE3128B78FF70035518A /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BDE3028B78FF70035518A /* Service.swift */; };
 		A6765FBA28B53E6000D5B850 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6765FB928B53E6000D5B850 /* Models.swift */; };
 		A6765FC328B5447D00D5B850 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6765FC228B5447C00D5B850 /* GoogleService-Info.plist */; };
 		A6765FC628B5493600D5B850 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A6765FC528B5493600D5B850 /* FirebaseAuth */; };
@@ -40,6 +41,7 @@
 		A61538F028B14AB90058D44B /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		A642438C28B4FEBD0067450F /* MainTabView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView2.swift; sourceTree = "<group>"; };
 		A642439128B516750067450F /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		A66BDE3028B78FF70035518A /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		A6765FB928B53E6000D5B850 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		A6765FC228B5447C00D5B850 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A686D8DC28B0E58200745E9E /* Tuitta2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tuitta2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +106,7 @@
 				A642439128B516750067450F /* ImagePicker.swift */,
 				A686D8E128B0E58200745E9E /* ContentView.swift */,
 				A686D8ED28B0E61700745E9E /* MainTabView.swift */,
+				A66BDE3028B78FF70035518A /* Service.swift */,
 				A642438C28B4FEBD0067450F /* MainTabView2.swift */,
 				A6765FB928B53E6000D5B850 /* Models.swift */,
 				A686D90528B1056F00745E9E /* Auth */,
@@ -270,6 +273,7 @@
 				A642438D28B4FEBD0067450F /* MainTabView2.swift in Sources */,
 				A686D8E028B0E58200745E9E /* Tuitta2App.swift in Sources */,
 				A686D8F828B0F8B800745E9E /* LoginView.swift in Sources */,
+				A66BDE3128B78FF70035518A /* Service.swift in Sources */,
 				A686D8F028B0E72800745E9E /* MainPostsView.swift in Sources */,
 				A686D8FA28B0F8CE00745E9E /* AuthViewModel.swift in Sources */,
 				A686D90A28B130FC00745E9E /* NewPostView.swift in Sources */,

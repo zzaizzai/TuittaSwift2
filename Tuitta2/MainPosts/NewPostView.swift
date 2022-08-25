@@ -45,6 +45,7 @@ struct NewPostView: View {
                             ZStack(alignment: .topTrailing) {
                                 Image(uiImage: uploadImage)
                                     .resizable()
+                                    .scaledToFill()
                                     .frame(width: 200, height: 200)
                                     .cornerRadius(20)
                                 
@@ -80,9 +81,6 @@ struct NewPostView: View {
             .onTapGesture {
                 self.focusState = true
             }
-            
-            
-            
         }
         .navigationBarHidden(true)
         .safeAreaInset(edge: .top) {
