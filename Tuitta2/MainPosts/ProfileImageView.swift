@@ -9,14 +9,14 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ProfileImageView: View {
-    @EnvironmentObject var page: PageControl
     
     let profileImageUrl : String?
+    @State var showProfile = false
     
     @State private var showUserProfile = false
     var body: some View {
         ZStack{
-            NavigationLink("", isActive: $page.showUserProfileIndex0) {
+            NavigationLink("", isActive: $showProfile) {
                 Text("user profile from image")
             }
             
@@ -39,7 +39,7 @@ struct ProfileImageView: View {
                 
             }
             .onTapGesture {
-                page.showUserProfileIndex0 = true
+                self.showProfile = true
             }
 
 
