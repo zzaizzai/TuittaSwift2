@@ -10,68 +10,86 @@ import SDWebImageSwiftUI
 
 class PostDetailViewModel : ObservableObject {
     @Published var commentText = ""
+    @Published var post: Post?
+    
+    init(post: Post?){
+        self.post = post
+    }
+    
 }
 
 struct PostDetailView: View {
     
     var post : Post?
+    @ObservedObject var vm : PostDetailViewModel
+    @EnvironmentObject var auth : AuthViewModel
     
     init(post: Post?){
         self.post = post
+        self.vm = PostDetailViewModel(post: post)
         
     }
     
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var vm = PostDetailViewModel()
-    
     var body: some View {
         ScrollView{
-            VStack(alignment: .leading) {
-                HStack{
-                    
-                    if let profileUrl = post?.user?.profileImageUrl {
-                        WebImage(url: URL(string: profileUrl))
-                            .resizable()
-                            .background(Color.gray)
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(100)
+            ZStack(alignment: .topTrailing) {
+                
+                if auth.currentUser?.uid == vm.post?.authorUid {
+                    menuOfPost
+                } else {
+                   if self.showMenuOfPost {
+                        Text("it is not your post")
+                           .padding(.trailing, 40)
+                    }
+                }
+                
+                VStack(alignment: .leading) {
+                    HStack{
                         
-                    } else {
-                        Image(systemName: "person")
-                            .resizable()
-                            .background(Color.gray)
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(100)
-                    }
+                        ProfileImageView(user: vm.post?.user)
 
-                    VStack(alignment: .leading) {
-                        HStack{
-                            Text(self.post?.user?.name ?? "name")
-                            Spacer()
-                            
-                            Text("...")
+                        VStack(alignment: .leading) {
+                            HStack{
+                                Text(self.post?.user?.name ?? "name")
+                                Spacer()
+                                
+                                Text("...")
+                                    .onTapGesture {
+                                        withAnimation(.easeIn(duration: 0.2)) {
+                                            self.showMenuOfPost.toggle()
+                                        }
+                                    }
+                            }
+                            Text(self.post?.user?.email ?? "email")
                         }
-                        Text(self.post?.user?.email ?? "email")
+                        
+                        
                     }
                     
+                    Text(self.post?.postText ?? "content content content content content content")
+                        .font(.title2.bold())
                     
-                }
-                
-                Text(self.post?.postText ?? "content content content content content content")
-                    .font(.title2.bold())
-                
-                if let postimageurl = self.post?.postImageUrl {
-                    if postimageurl.count > 30 {
-                        WebImage(url: URL(string: postimageurl))
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 250, height: 250)
-                            .cornerRadius(20)
+                    HStack{
+                        
+                        Spacer()
+                        
+                        if let postimageurl = self.post?.postImageUrl {
+                            if postimageurl.count > 30 {
+                                WebImage(url: URL(string: postimageurl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 300, height: 300)
+                                    .cornerRadius(20)
+                            }
+                        }
+                        
+                        Spacer()
                     }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
             
         }
         .navigationBarHidden(true)
@@ -82,6 +100,30 @@ struct PostDetailView: View {
             bottomview
         }
     }
+    
+    @State private var showMenuOfPost = false
+    private var menuOfPost : some View {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Delete")
+                        .foregroundColor(Color.red)
+                    
+                    
+                    Text("Do nothing")
+                        .onTapGesture {
+                            self.showMenuOfPost = false
+                        }
+                }
+                .padding()
+                .background(Color.init(white: 0.7))
+                .cornerRadius(20)
+                .padding(.trailing, 50)
+                .zIndex(1)
+                .offset(x: self.showMenuOfPost ?  0 : 500 )
+
+            }
+        
+    
+        
     
     private var topview: some View {
         HStack{
@@ -117,6 +159,7 @@ struct PostDetailView: View {
 struct PostDetailView_Previews: PreviewProvider {
     static var previews: some View {
         PostDetailView(post: nil)
+            .environmentObject(AuthViewModel())
             .font(.body.bold())
     }
 }
