@@ -10,8 +10,15 @@ import SDWebImageSwiftUI
 
 struct ProfileImageView: View {
     
-    let profileImageUrl : String?
+    let user : User?
+    
+    init(user: User?) {
+        self.user = user
+        
+    }
     @State var showProfile = false
+    
+    
     
     @State private var showUserProfile = false
     var body: some View {
@@ -22,7 +29,7 @@ struct ProfileImageView: View {
             
             ZStack{
                 
-                if let profileImageUrl = profileImageUrl {
+                if let profileImageUrl = user?.profileImageUrl {
                     WebImage(url: URL(string: profileImageUrl))
                         .resizable()
                         .scaledToFill()
@@ -51,7 +58,7 @@ struct ProfileImageView: View {
 struct ProfileImageView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            ProfileImageView(profileImageUrl: nil)
+            ProfileImageView(user: nil)
                 .environmentObject(PageControl())
         }
     }

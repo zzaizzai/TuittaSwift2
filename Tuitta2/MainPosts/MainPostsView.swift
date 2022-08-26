@@ -19,6 +19,10 @@ class MainPostsViewModel : ObservableObject {
         self.getPostsData()
     }
     
+    func upToScroll() {
+        self.count += 1
+    }
+    
     
     func getPostsData() {
         
@@ -76,7 +80,7 @@ struct MainPostsView: View {
                                 }
                                 
                             }
-                            .onReceive(page.$countIndex0) { xx in
+                            .onReceive(vm.$count) { xx in
                                 withAnimation(.easeOut(duration: 0.2)) {
                                     ScrollViewProxy.scrollTo("Empty", anchor: .top)
                                 }
@@ -140,7 +144,10 @@ struct MainPostsView: View {
             
             Spacer()
             
-            Text(page.countIndex0.description)
+            Text(vm.count .description)
+                .onTapGesture {
+                    vm.upToScroll()
+                }
         }
         .frame(height: 40)
         .background(Color.white.opacity(0.9))
