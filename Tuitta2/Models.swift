@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestoreSwift
+
 
 struct User: Identifiable, Codable {
     var id: String {documentId}
@@ -35,8 +38,7 @@ struct Post: Identifiable, Codable {
     let documentId: String
     let authorUid : String
     let postImageUrl, postText: String
-    let time: Date
-    var likes: Int
+    let time: Timestamp
     
     var didLike: Bool = false
     
@@ -49,8 +51,7 @@ struct Post: Identifiable, Codable {
         self.postText = data["postText"] as? String ?? "no postText"
         self.postImageUrl = data["postImageUrl"] as? String ?? "no postImageUrl"
         
-        self.time = data["time"] as? Date ?? Date()
-        self.likes = data["likes"] as? Int ?? 0
+        self.time = data["time"] as? Timestamp ?? Timestamp()
         
     }
 }
