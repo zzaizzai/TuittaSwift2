@@ -22,7 +22,7 @@ class MainPostsViewModel : ObservableObject {
     
     func getPostsData() {
         
-        Firestore.firestore().collection("posts").getDocuments { snapshot, error in
+        Firestore.firestore().collection("posts").order(by: "time").getDocuments { snapshot, error in
             if let error = error {
                 print(error)
                 return
@@ -134,7 +134,7 @@ struct MainPostsView: View {
                 .padding()
                 .onTapGesture {
                     withAnimation {
-                        page.showSideMenu = true
+//                        page.showSideMenu = true
                     }
                 }
             

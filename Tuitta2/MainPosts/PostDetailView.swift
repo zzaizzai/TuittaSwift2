@@ -16,6 +16,11 @@ struct PostDetailView: View {
     
     var post : Post?
     
+    init(post: Post?){
+        self.post = post
+        
+    }
+    
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject var vm = PostDetailViewModel()
@@ -31,6 +36,7 @@ struct PostDetailView: View {
                             .background(Color.gray)
                             .frame(width: 50, height: 50)
                             .cornerRadius(100)
+                        
                     } else {
                         Image(systemName: "person")
                             .resizable()
@@ -54,6 +60,16 @@ struct PostDetailView: View {
                 
                 Text(self.post?.postText ?? "content content content content content content")
                     .font(.title2.bold())
+                
+                if let postimageurl = self.post?.postImageUrl {
+                    if postimageurl.count > 30 {
+                        WebImage(url: URL(string: postimageurl))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 250, height: 250)
+                            .cornerRadius(20)
+                    }
+                }
             }
             .padding(.horizontal)
             
@@ -100,7 +116,7 @@ struct PostDetailView: View {
 
 struct PostDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PostDetailView()
+        PostDetailView(post: nil)
             .font(.body.bold())
     }
 }
