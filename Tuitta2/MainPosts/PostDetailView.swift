@@ -12,9 +12,52 @@ class PostDetailViewModel : ObservableObject {
     @Published var commentText = ""
     @Published var post: Post?
     
+    @Published var didLike = false
+    @Published var CountLikes = 0
+    private let service = Service()
+    
     init(post: Post?){
         self.post = post
+        self.checkDidLike(post: post)
+        self.checkLikesCount(post: post)
+        
     }
+    
+    func checkDidLike(post: Post?) {
+        self.service.checkDidLike(post: self.post) { didLike in
+            if didLike {
+                self.didLike = true
+            }
+            else {
+                self.didLike = false
+            }
+        }
+    }
+    
+    func checkLikesCount(post: Post?) {
+        self.service.checkCountLikes(post: post) { likesCount in
+            self.CountLikes = likesCount
+        }
+    }
+    
+    func unlikeThisPost(post: Post?){
+        self.service.unlikeThosPost(post: post) {
+            print("unlike done")
+            self.didLike = false
+            self.CountLikes += -1
+        }
+        
+    }
+    
+    func likethisPost(post: Post?) {
+        self.service.likeThisPost(post: post) {
+            print("like done")
+            self.didLike = true
+            self.CountLikes += 1
+        }
+    }
+    
+    
     
 }
 
@@ -91,6 +134,35 @@ struct PostDetailView: View {
                 .padding(.horizontal)
             }
             
+            HStack{
+                
+                Spacer()
+                Image(systemName: "message")
+                Text("0")
+                Spacer()
+                Image(systemName: "arrow.2.squarepath")
+                Text("0")
+                Spacer()
+                Button {
+                    if vm.didLike {
+                        vm.unlikeThisPost(post: vm.post)
+                    } else {
+                        vm.likethisPost(post: vm.post)
+                    }
+                } label: {
+                    ZStack{
+                        Image(systemName: vm.didLike ? "heart.fill" : "heart")
+                            .zIndex(vm.didLike ? 0 : 1)
+                        
+                    }
+
+                    Text(vm.CountLikes.description)
+                }
+                .foregroundColor(vm.didLike ? Color.red : Color.black)
+                
+                Spacer()
+            }
+            
         }
         .navigationBarHidden(true)
         .safeAreaInset(edge: .top, content: {
@@ -158,7 +230,8 @@ struct PostDetailView: View {
 
 struct PostDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PostDetailView(post: nil)
+//        PostDetailView(post: nil)
+        MainPostsView()
             .environmentObject(AuthViewModel())
             .font(.body.bold())
     }

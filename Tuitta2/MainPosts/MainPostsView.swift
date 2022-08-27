@@ -15,6 +15,8 @@ class MainPostsViewModel : ObservableObject {
     private let service = Service()
     
     
+    
+    
     init(){
         self.getPostsData()
     }
