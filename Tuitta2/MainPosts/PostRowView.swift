@@ -17,8 +17,8 @@ class PostRowViewModel : ObservableObject {
     @Published var comments : Int = 0
     @Published var rePost = false
     
-    @Published var CountLikes : Int = 0
-    @Published var CountComments : Int = 0
+    @Published var countLikes : Int = 0
+    @Published var countComments : Int = 0
     
     
     init(post: Post?){
@@ -29,57 +29,43 @@ class PostRowViewModel : ObservableObject {
         
     }
     
-
-    func checkDidLike(post: Post?) {
-        guard let userUid = Auth.auth().currentUser?.uid else { return }
-        guard let post = post else { return }
+    func likeThisPost(post: Post?) {
+        self.service.likeThisPost(post: post) {
+            print("like done")
+        }
         
-        Firestore.firestore().collection("posts").document(post.id).collection("liked").document(userUid).getDocument { snpashot, error in
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            guard let _ = snpashot?.data() else {
+    }
+    
+    func unlikeThosPost(post: Post?) {
+        self.service.unlikeThosPost(post: post) {
+            print("unlike done")
+        }
+        
+    }
+    
+    
+    func checkDidLike(post: Post?) {
+        self.service.checkDidLike(post: post) { didLike in
+            if didLike {
+                self.didLike = true
+            } else {
                 self.didLike = false
-                return
+                
             }
-            
-            self.didLike = true
-            
         }
     }
     
     func countLikes(post: Post?){
-        guard let postUid = post?.id else { return }
-        
-        Firestore.firestore().collection("posts").document(postUid).collection("liked").getDocuments { snpashot, error in
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            snpashot?.documents.forEach({ doc in
-                self.CountLikes += 1
-            })
+        self.service.checkCountLikes(post: post) { likes in
+            self.countLikes = likes
         }
-        
         
         
     }
     
     func countComments(post: Post?) {
-        guard let postUid = post?.id else { return }
-        
-        Firestore.firestore().collection("posts").document(postUid).collection("comments").getDocuments { snapshot, error in
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            snapshot?.documents.forEach({ doc in
-                self.CountComments += 1
-            })
+        self.service.countComments(post: post) { countComments in
+            self.countComments = countComments
         }
     }
 
@@ -141,13 +127,17 @@ struct PostRowView : View {
                     
                     HStack{
                         Image(systemName: "message")
-                        Text(vm.CountComments.description)
+                        Text(vm.countComments.description)
                         Spacer()
                         Image(systemName: "arrow.2.squarepath")
                         Text("0")
                         Spacer()
                         Button {
-                            vm.didLike.toggle()
+                            if vm.didLike {
+                                vm.unlikeThosPost(post: vm.post)
+                            } else {
+                                vm.likeThisPost(post: vm.post)
+                            }
                         } label: {
                             ZStack{
                                 Image(systemName: vm.didLike ? "heart.fill" : "heart")
@@ -155,7 +145,7 @@ struct PostRowView : View {
                                 
                             }
 
-                            Text(vm.CountLikes.description)
+                            Text(vm.countLikes.description)
                         }
                         .foregroundColor(vm.didLike ? Color.red : Color.black)
                         
