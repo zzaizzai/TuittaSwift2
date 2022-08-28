@@ -28,21 +28,23 @@ class MainPostsViewModel : ObservableObject {
     
     func getPostsData() {
         
-        Firestore.firestore().collection("posts").order(by: "time").getDocuments { snapshot, error in
+        Firestore.firestore().collection("posts").order(by: "time").addSnapshotListener { snapshot, error in
             if let error = error {
                 print(error)
                 return
             }
             
-            snapshot?.documents.forEach { doc  in
-                let docId = doc.documentID
-                let data = doc.data()
+            snapshot?.documentChanges.forEach({ doc in
+                let docId = doc.document.documentID
+                let data = doc.document.data()
                 
                 
-                self.posts.insert(.init(documentId: docId, data: data), at: 0)
-            }
+                if doc.type == .added {
+                    self.posts.insert(.init(documentId: docId, data: data), at: 0)
+                }
+            })
             
-            
+            // get user data with the postUid
             for i in 0 ..< self.posts.count {
                 let uid = self.posts[i].authorUid
                 
@@ -51,6 +53,9 @@ class MainPostsViewModel : ObservableObject {
                 }
                 
             }
+            
+            
+
             
         }
     }

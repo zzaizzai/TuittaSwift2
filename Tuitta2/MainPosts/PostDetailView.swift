@@ -202,7 +202,7 @@ struct PostDetailView: View {
             Button {
                 dismiss()
             } label: {
-                Text("Cancle")
+                Image(systemName: "chevron.backward")
                     .padding()
                     .foregroundColor(Color.black)
             }

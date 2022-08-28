@@ -32,6 +32,7 @@ class PostRowViewModel : ObservableObject {
     func likeThisPost(post: Post?) {
         self.service.likeThisPost(post: post) {
             print("like done")
+//            self.countLikes += 1
         }
         
     }
@@ -39,6 +40,7 @@ class PostRowViewModel : ObservableObject {
     func unlikeThosPost(post: Post?) {
         self.service.unlikeThosPost(post: post) {
             print("unlike done")
+//            self.countLikes += -1
         }
         
     }
