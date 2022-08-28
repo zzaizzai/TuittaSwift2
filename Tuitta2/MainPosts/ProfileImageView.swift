@@ -24,7 +24,7 @@ struct ProfileImageView: View {
     var body: some View {
         ZStack{
             NavigationLink("", isActive: $showProfile) {
-                Text("user profile from image")
+                UserProfileView(user: self.user)
             }
             
             ZStack{
