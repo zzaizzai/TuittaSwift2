@@ -137,140 +137,144 @@ struct PostDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        ScrollView{
-            ZStack(alignment: .topTrailing) {
-                
-                if auth.currentUser?.uid == vm.post?.authorUid {
-                    menuOfPost
-                } else {
-                    if self.showMenuOfPost {
-                        Text("it is not your post")
-                            .padding(.trailing, 40)
+        ZStack {
+            ScrollView{
+                ZStack(alignment: .topTrailing) {
+                    
+                    if auth.currentUser?.uid == vm.post?.authorUid {
+                        menuOfPost
+                    } else {
+                        if self.showMenuOfPost {
+                            Text("it is not your post")
+                                .padding(.trailing, 40)
+                        }
                     }
+                    
+                    VStack(alignment: .leading) {
+                        HStack{
+                            
+                            ProfileImageView(user: vm.post?.user)
+                            
+                            VStack(alignment: .leading) {
+                                HStack{
+                                    Text(self.post?.user?.name ?? "name")
+                                    Spacer()
+                                    
+                                    Text("...")
+                                        .onTapGesture {
+                                            withAnimation(.easeIn(duration: 0.2)) {
+                                                self.showMenuOfPost.toggle()
+                                            }
+                                        }
+                                }
+                                Text(self.post?.user?.email ?? "email")
+                            }
+                            
+                            
+                        }
+                        
+                        Text(self.post?.postText ?? "content content content content content content")
+                            .font(.title2.bold())
+                        
+                        HStack{
+                            
+                            Spacer()
+                            
+                            if let postimageurl = self.post?.postImageUrl {
+                                if postimageurl.count > 30 {
+                                    WebImage(url: URL(string: postimageurl))
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 300, height: 300)
+                                        .cornerRadius(20)
+                                        .onTapGesture {
+                                        }
+                                }
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .padding(.horizontal)
                 }
                 
-                VStack(alignment: .leading) {
-                    HStack{
-                        
-                        ProfileImageView(user: vm.post?.user)
-                        
-                        VStack(alignment: .leading) {
-                            HStack{
-                                Text(self.post?.user?.name ?? "name")
-                                Spacer()
-                                
-                                Text("...")
-                                    .onTapGesture {
-                                        withAnimation(.easeIn(duration: 0.2)) {
-                                            self.showMenuOfPost.toggle()
-                                        }
-                                    }
-                            }
-                            Text(self.post?.user?.email ?? "email")
-                        }
-                        
-                        
-                    }
+                HStack{
+                    Text(vm.post?.time.dateValue() ?? Date() , style: .time)
+                    Text(vm.post?.time.dateValue() ?? Date() , style: .date)
                     
-                    Text(self.post?.postText ?? "content content content content content content")
-                        .font(.title2.bold())
-                    
-                    HStack{
-                        
-                        Spacer()
-                        
-                        if let postimageurl = self.post?.postImageUrl {
-                            if postimageurl.count > 30 {
-                                WebImage(url: URL(string: postimageurl))
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 300, height: 300)
-                                    .cornerRadius(20)
-                            }
-                        }
-                        
-                        Spacer()
-                    }
+                    Spacer()
                 }
                 .padding(.horizontal)
-            }
-            
-            HStack{
-                Text(vm.post?.time.dateValue() ?? Date() , style: .time)
-                Text(vm.post?.time.dateValue() ?? Date() , style: .date)
                 
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            HStack{
-                Text("likes: \(vm.CountLikes.description)")
-                    .onTapGesture {
-                        self.showLikedUsers.toggle()
-                    }
-                
-                
-                NavigationLink("" ,isActive: $showLikedUsers) {
-                    PostLikedUsersView(post: vm.post)
-                }
-                
-                // Todo: show users who are liked it when you tap this
-                
-                
-                
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            
-            Divider()
-            
-            
-            //buttons
-            HStack{
-                
-                Spacer()
-                Image(systemName: "message")
-                //                Text("0")
-                Spacer()
-                Image(systemName: "arrow.2.squarepath")
-                //                Text("0")
-                Spacer()
-                Button {
-                    if vm.didLike {
-                        vm.unlikeThisPost(post: vm.post)
-                    } else {
-                        vm.likethisPost(post: vm.post)
-                    }
-                } label: {
-                    ZStack{
-                        Image(systemName: vm.didLike ? "heart.fill" : "heart")
-                            .zIndex(vm.didLike ? 0 : 1)
-                        
+                HStack{
+                    Text("likes: \(vm.CountLikes.description)")
+                        .onTapGesture {
+                            self.showLikedUsers.toggle()
+                        }
+                    
+                    
+                    NavigationLink("" ,isActive: $showLikedUsers) {
+                        PostLikedUsersView(post: vm.post)
                     }
                     
-                    //                    Text(vm.CountLikes.description)
+                    // Todo: show users who are liked it when you tap this
+                    
+                    
+                    
+                    
+                    Spacer()
                 }
-                .foregroundColor(vm.didLike ? Color.red : Color.black)
+                .padding(.horizontal)
                 
-                Spacer()
+                
+                Divider()
+                
+                
+                //buttons
+                HStack{
+                    
+                    Spacer()
+                    Image(systemName: "message")
+                    //                Text("0")
+                    Spacer()
+                    Image(systemName: "arrow.2.squarepath")
+                    //                Text("0")
+                    Spacer()
+                    Button {
+                        if vm.didLike {
+                            vm.unlikeThisPost(post: vm.post)
+                        } else {
+                            vm.likethisPost(post: vm.post)
+                        }
+                    } label: {
+                        ZStack{
+                            Image(systemName: vm.didLike ? "heart.fill" : "heart")
+                                .zIndex(vm.didLike ? 0 : 1)
+                            
+                        }
+                        
+                        //                    Text(vm.CountLikes.description)
+                    }
+                    .foregroundColor(vm.didLike ? Color.red : Color.black)
+                    
+                    Spacer()
+                }
+                .padding(.vertical, 5)
+                
+                Divider()
+                
+                ForEach(vm.comments){ comment in
+                    CommentRowView(comment: comment)
+                }
+                
             }
-            .padding(.vertical, 5)
-            
-            Divider()
-            
-            ForEach(vm.comments){ comment in
-                CommentRowView(comment: comment)
-            }
-            
+            .navigationBarHidden(true)
+            .safeAreaInset(edge: .top, content: {
+                topview
+            })
+            .safeAreaInset(edge: .bottom) {
+                bottomview
         }
-        .navigationBarHidden(true)
-        .safeAreaInset(edge: .top, content: {
-            topview
-        })
-        .safeAreaInset(edge: .bottom) {
-            bottomview
         }
     }
     

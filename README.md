@@ -5,7 +5,7 @@
 
 Im trying to build a app what we can use it instinctively   
 
-functional simple UI   
+functional simple UI   (its paradox....)
 
 
 improving UI and functionalities from previous studying project (https://github.com/zzaizzai/TuittaSwift)
