@@ -34,6 +34,8 @@
 		A686D90828B10ECA00745E9E /* PostRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686D90728B10ECA00745E9E /* PostRowView.swift */; };
 		A686D90A28B130FC00745E9E /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686D90928B130FC00745E9E /* NewPostView.swift */; };
 		A686D90C28B13CDB00745E9E /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686D90B28B13CDB00745E9E /* PostDetailView.swift */; };
+		A6E56CFB28BB0AF6005EDA96 /* PostLikedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E56CFA28BB0AF6005EDA96 /* PostLikedUsersView.swift */; };
+		A6E56CFD28BB0FCF005EDA96 /* UserRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E56CFC28BB0FCF005EDA96 /* UserRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,8 @@
 		A686D90728B10ECA00745E9E /* PostRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRowView.swift; sourceTree = "<group>"; };
 		A686D90928B130FC00745E9E /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
 		A686D90B28B13CDB00745E9E /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
+		A6E56CFA28BB0AF6005EDA96 /* PostLikedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikedUsersView.swift; sourceTree = "<group>"; };
+		A6E56CFC28BB0FCF005EDA96 /* UserRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +141,8 @@
 				A686D90928B130FC00745E9E /* NewPostView.swift */,
 				A686D90B28B13CDB00745E9E /* PostDetailView.swift */,
 				A61538EE28B145240058D44B /* ProfileImageView.swift */,
+				A6E56CFA28BB0AF6005EDA96 /* PostLikedUsersView.swift */,
+				A6E56CFC28BB0FCF005EDA96 /* UserRowView.swift */,
 			);
 			path = MainPosts;
 			sourceTree = "<group>";
@@ -270,6 +276,7 @@
 				A686D8E228B0E58200745E9E /* ContentView.swift in Sources */,
 				A686D8F228B0E73B00745E9E /* RecentMessagesView.swift in Sources */,
 				A686D8EE28B0E61700745E9E /* MainTabView.swift in Sources */,
+				A6E56CFD28BB0FCF005EDA96 /* UserRowView.swift in Sources */,
 				A642438D28B4FEBD0067450F /* MainTabView2.swift in Sources */,
 				A686D8E028B0E58200745E9E /* Tuitta2App.swift in Sources */,
 				A686D8F828B0F8B800745E9E /* LoginView.swift in Sources */,
@@ -278,6 +285,7 @@
 				A686D8FA28B0F8CE00745E9E /* AuthViewModel.swift in Sources */,
 				A686D90A28B130FC00745E9E /* NewPostView.swift in Sources */,
 				A686D90C28B13CDB00745E9E /* PostDetailView.swift in Sources */,
+				A6E56CFB28BB0AF6005EDA96 /* PostLikedUsersView.swift in Sources */,
 				A61538EF28B145240058D44B /* ProfileImageView.swift in Sources */,
 				A6765FBA28B53E6000D5B850 /* Models.swift in Sources */,
 				A686D90828B10ECA00745E9E /* PostRowView.swift in Sources */,

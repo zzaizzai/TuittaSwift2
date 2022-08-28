@@ -25,47 +25,30 @@ class NewPostViewModel : ObservableObject {
         let ref = Firestore.firestore().collection("posts").document()
 
         let docId = ref.documentID
-//
-            let data = [
+        
+        self.storePostImage(docId: docId) { url in
 
-                "authorUid" : user.uid,
-                "postText" : self.uploadText,
-                "postImageUrl": "",
-                "time" : Date(),
-            ] as [String:Any]
-        
-        
-        ref.setData(data) { error in
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            self.errorMessage = "\(docId)"
-            
-            self.storePostImage(docId: docId) { url in
-                if url == "" {
-                    self.errorMessage = "upload done with image"
-                    done(true)
-                    
-                } else {
-                    
-                    
-                    Firestore.firestore().collection("posts").document(docId).setData(["postImageUrl" : url ], merge: true) { error in
-                        if let error = error {
-                            print(error)
-                            return
-                        }
-                        self.errorMessage = "upload done without image"
-                        
-                        self.uploadText = ""
-                        self.uploadImage = nil
-                        done(true)
+                
+                let data = [
+
+                    "authorUid" : user.uid,
+                    "postText" : self.uploadText,
+                    "postImageUrl": url,
+                    "time" : Date(),
+                ] as [String:Any]
+                
+                
+                ref.setData(data) { error in
+                    if let error = error {
+                        print(error)
+                        return
                     }
-                }
+                    
+                    self.errorMessage = "done"
+                    
+                    done(true)
+                
             }
-            
-            
         }
         
     }
