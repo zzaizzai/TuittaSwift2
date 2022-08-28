@@ -11,6 +11,8 @@ import Firebase
 
 struct Service {
     
+    var firebaselinster : ListenerRegistration?
+    
     func getUserData(userUid: String, done: @escaping (User)->() ) {
         
         Firestore.firestore().collection("users").document(userUid).getDocument { snapshot, error in
@@ -32,7 +34,24 @@ struct Service {
         guard let userUid = Auth.auth().currentUser?.uid else { return }
         guard let post = post else { return }
         
-        Firestore.firestore().collection("posts").document(post.id).collection("liked").document(userUid).getDocument { snpashot, error in
+        firebaselinster?.remove()
+        
+//        Firestore.firestore().collection("posts").document(post.id).collection("liked").document(userUid).getDocument { snpashot, error in
+//            if let error = error {
+//                print(error)
+//                return
+//            }
+//
+//            guard let _ = snpashot?.data() else {
+//                didLike(false)
+//                return
+//            }
+//
+//            didLike(true)
+//
+//        }
+        
+        Firestore.firestore().collection("posts").document(post.id).collection("liked").document(userUid).addSnapshotListener { snpashot, error in
             if let error = error {
                 print(error)
                 return
@@ -46,6 +65,8 @@ struct Service {
             didLike(true)
             
         }
+        
+        
     }
     
     func likeThisPost(post: Post?, done: @escaping ()->()) {
@@ -84,17 +105,29 @@ struct Service {
     func checkCountLikes(post: Post?, likes: @escaping (Int) -> () ){
         guard let postUid = post?.id else { return }
         
+        firebaselinster?.remove()
+        
         var likesCounts = 0
         
-        Firestore.firestore().collection("posts").document(postUid).collection("liked").getDocuments { snpashot, error in
+        Firestore.firestore().collection("posts").document(postUid).collection("liked").addSnapshotListener { snpashot, error in
             if let error = error {
                 print(error)
                 return
             }
-            
-            snpashot?.documents.forEach({ doc in
-                likesCounts += 1
+            snpashot?.documentChanges.forEach({ change in
+                if change.type == .added {
+                    likesCounts += 1
+                }
+                
+                if change.type == .removed {
+                    likesCounts += -1
+                }
+                
+                
             })
+//            snpashot?.documents.forEach({ doc in
+//                likesCounts += 1
+//            })
             
             likes(likesCounts)
         }
