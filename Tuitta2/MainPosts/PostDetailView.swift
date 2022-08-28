@@ -67,6 +67,8 @@ struct PostDetailView: View {
     @ObservedObject var vm : PostDetailViewModel
     @EnvironmentObject var auth : AuthViewModel
     
+    @State var showLikedUsers = false
+    
     init(post: Post?){
         self.post = post
         self.vm = PostDetailViewModel(post: post)
@@ -135,13 +137,46 @@ struct PostDetailView: View {
             }
             
             HStack{
+                Text(vm.post?.time.dateValue() ?? Date() , style: .time)
+                Text(vm.post?.time.dateValue() ?? Date() , style: .date)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            HStack{
+                Text("likes: \(vm.CountLikes.description)")
+                    .onTapGesture {
+                        self.showLikedUsers.toggle()
+                    }
+                
+                
+                NavigationLink("" ,isActive: $showLikedUsers) {
+                    PostLikedUsersView(post: vm.post)
+                }
+                
+                // Todo: show users who are liked it when you tap this
+                
+                
+                
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            
+            Divider()
+            
+            
+            //buttons
+            HStack{
                 
                 Spacer()
                 Image(systemName: "message")
-                Text("0")
+//                Text("0")
                 Spacer()
                 Image(systemName: "arrow.2.squarepath")
-                Text("0")
+//                Text("0")
                 Spacer()
                 Button {
                     if vm.didLike {
@@ -156,12 +191,15 @@ struct PostDetailView: View {
                         
                     }
 
-                    Text(vm.CountLikes.description)
+//                    Text(vm.CountLikes.description)
                 }
                 .foregroundColor(vm.didLike ? Color.red : Color.black)
                 
                 Spacer()
             }
+            .padding(.vertical, 5)
+            
+            Divider()
             
         }
         .navigationBarHidden(true)
