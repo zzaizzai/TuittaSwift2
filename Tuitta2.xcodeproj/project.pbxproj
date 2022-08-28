@@ -34,6 +34,7 @@
 		A686D90828B10ECA00745E9E /* PostRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686D90728B10ECA00745E9E /* PostRowView.swift */; };
 		A686D90A28B130FC00745E9E /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686D90928B130FC00745E9E /* NewPostView.swift */; };
 		A686D90C28B13CDB00745E9E /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686D90B28B13CDB00745E9E /* PostDetailView.swift */; };
+		A6C8C30A28BB495000229B06 /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C8C30928BB495000229B06 /* CommentRowView.swift */; };
 		A6E56CFB28BB0AF6005EDA96 /* PostLikedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E56CFA28BB0AF6005EDA96 /* PostLikedUsersView.swift */; };
 		A6E56CFD28BB0FCF005EDA96 /* UserRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E56CFC28BB0FCF005EDA96 /* UserRowView.swift */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		A686D90728B10ECA00745E9E /* PostRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRowView.swift; sourceTree = "<group>"; };
 		A686D90928B130FC00745E9E /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
 		A686D90B28B13CDB00745E9E /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
+		A6C8C30928BB495000229B06 /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
 		A6E56CFA28BB0AF6005EDA96 /* PostLikedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikedUsersView.swift; sourceTree = "<group>"; };
 		A6E56CFC28BB0FCF005EDA96 /* UserRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +142,7 @@
 				A686D90728B10ECA00745E9E /* PostRowView.swift */,
 				A686D90928B130FC00745E9E /* NewPostView.swift */,
 				A686D90B28B13CDB00745E9E /* PostDetailView.swift */,
+				A6C8C30928BB495000229B06 /* CommentRowView.swift */,
 				A61538EE28B145240058D44B /* ProfileImageView.swift */,
 				A6E56CFA28BB0AF6005EDA96 /* PostLikedUsersView.swift */,
 				A6E56CFC28BB0FCF005EDA96 /* UserRowView.swift */,
@@ -274,6 +277,7 @@
 				A61538F128B14AB90058D44B /* SideMenuView.swift in Sources */,
 				A642439228B516750067450F /* ImagePicker.swift in Sources */,
 				A686D8E228B0E58200745E9E /* ContentView.swift in Sources */,
+				A6C8C30A28BB495000229B06 /* CommentRowView.swift in Sources */,
 				A686D8F228B0E73B00745E9E /* RecentMessagesView.swift in Sources */,
 				A686D8EE28B0E61700745E9E /* MainTabView.swift in Sources */,
 				A6E56CFD28BB0FCF005EDA96 /* UserRowView.swift in Sources */,

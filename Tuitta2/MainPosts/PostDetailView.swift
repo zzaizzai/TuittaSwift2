@@ -7,19 +7,25 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Firebase
 
 class PostDetailViewModel : ObservableObject {
     @Published var commentText = ""
     @Published var post: Post?
     
+    @Published var comments = [Comment]()
+    
     @Published var didLike = false
     @Published var CountLikes = 0
     private let service = Service()
     
+    
     init(post: Post?){
+        self.getCommentsData(post: post)
         self.post = post
         self.checkDidLike(post: post)
         self.checkLikesCount(post: post)
+
         
     }
     
@@ -58,6 +64,59 @@ class PostDetailViewModel : ObservableObject {
     }
     
     
+    func getCommentsData(post: Post?) {
+        guard let post = post else {
+            return
+        }
+        
+        Firestore.firestore().collection("posts").document(post.id).collection("comments").order(by: "time").addSnapshotListener { snapshot, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            snapshot?.documentChanges.forEach({ doc in
+                let docId = doc.document.documentID
+                let data = doc.document.data()
+                
+                if doc.type == .added {
+                    self.comments.append(.init(documentId: docId, data: data))
+                }
+                
+                
+            })
+            
+            for i in 0 ..< self.comments.count {
+                self.service.getUserData(userUid: self.comments[i].userUid) { userData in
+                    self.comments[i].user = userData
+                }
+            }
+        }
+        
+    }
+    
+    
+    func writeComment() {
+        guard let userUid = Auth.auth().currentUser?.uid else { return }
+        guard let post = self.post else { return }
+        
+        let data = [
+            "commentText": self.commentText,
+            "postUid": post.id,
+            "time": Timestamp(),
+            "userUid": userUid,
+        ] as [String:Any]
+        
+        
+        Firestore.firestore().collection("posts").document(post.id).collection("comments").document().setData(data) { error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            self.commentText = ""
+        }
+    }
     
 }
 
@@ -84,9 +143,9 @@ struct PostDetailView: View {
                 if auth.currentUser?.uid == vm.post?.authorUid {
                     menuOfPost
                 } else {
-                   if self.showMenuOfPost {
+                    if self.showMenuOfPost {
                         Text("it is not your post")
-                           .padding(.trailing, 40)
+                            .padding(.trailing, 40)
                     }
                 }
                 
@@ -94,7 +153,7 @@ struct PostDetailView: View {
                     HStack{
                         
                         ProfileImageView(user: vm.post?.user)
-
+                        
                         VStack(alignment: .leading) {
                             HStack{
                                 Text(self.post?.user?.name ?? "name")
@@ -173,10 +232,10 @@ struct PostDetailView: View {
                 
                 Spacer()
                 Image(systemName: "message")
-//                Text("0")
+                //                Text("0")
                 Spacer()
                 Image(systemName: "arrow.2.squarepath")
-//                Text("0")
+                //                Text("0")
                 Spacer()
                 Button {
                     if vm.didLike {
@@ -190,8 +249,8 @@ struct PostDetailView: View {
                             .zIndex(vm.didLike ? 0 : 1)
                         
                     }
-
-//                    Text(vm.CountLikes.description)
+                    
+                    //                    Text(vm.CountLikes.description)
                 }
                 .foregroundColor(vm.didLike ? Color.red : Color.black)
                 
@@ -200,6 +259,10 @@ struct PostDetailView: View {
             .padding(.vertical, 5)
             
             Divider()
+            
+            ForEach(vm.comments){ comment in
+                CommentRowView(comment: comment)
+            }
             
         }
         .navigationBarHidden(true)
@@ -213,27 +276,27 @@ struct PostDetailView: View {
     
     @State private var showMenuOfPost = false
     private var menuOfPost : some View {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("Delete")
-                        .foregroundColor(Color.red)
-                    
-                    
-                    Text("Do nothing")
-                        .onTapGesture {
-                            self.showMenuOfPost = false
-                        }
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Delete")
+                .foregroundColor(Color.red)
+            
+            
+            Text("Do nothing")
+                .onTapGesture {
+                    self.showMenuOfPost = false
                 }
-                .padding()
-                .background(Color.init(white: 0.7))
-                .cornerRadius(20)
-                .padding(.trailing, 50)
-                .zIndex(1)
-                .offset(x: self.showMenuOfPost ?  0 : 500 )
-
-            }
+        }
+        .padding()
+        .background(Color.init(white: 0.7))
+        .cornerRadius(20)
+        .padding(.trailing, 50)
+        .zIndex(1)
+        .offset(x: self.showMenuOfPost ?  0 : 500 )
         
+    }
     
-        
+    
+    
     
     private var topview: some View {
         HStack{
@@ -261,14 +324,25 @@ struct PostDetailView: View {
                 .background(Color.init(white: 0.8))
                 .cornerRadius(30)
                 .padding()
+            
+            Button {
+                vm.writeComment()
+            } label: {
+                Image(systemName: "paperplane.fill")
+                    .padding(.horizontal)
+            }
+            
+            
         }
         .background(Color.init(white: 0.95))
+        
+        
     }
 }
 
 struct PostDetailView_Previews: PreviewProvider {
     static var previews: some View {
-//        PostDetailView(post: nil)
+        //        PostDetailView(post: nil)
         MainPostsView()
             .environmentObject(AuthViewModel())
             .font(.body.bold())

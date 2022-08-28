@@ -89,6 +89,11 @@ struct PostLikedUsersView: View {
             
             Spacer()
             
+            Text("who liked")
+                .offset(x: -20)
+            
+            Spacer()
+            
             
         }
         .frame(height: 40)

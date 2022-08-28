@@ -40,7 +40,6 @@ struct Post: Identifiable, Codable {
     let postImageUrl, postText: String
     let time: Timestamp
     
-    var didLike: Bool = false
     
     var user: User?
     
@@ -50,6 +49,30 @@ struct Post: Identifiable, Codable {
         
         self.postText = data["postText"] as? String ?? "no postText"
         self.postImageUrl = data["postImageUrl"] as? String ?? "no postImageUrl"
+        
+        self.time = data["time"] as? Timestamp ?? Timestamp()
+        
+    }
+}
+
+
+struct Comment: Identifiable, Codable {
+    
+    var id: String {documentId}
+    
+    let documentId: String
+    let userUid, postUid, commentText: String
+    let time: Timestamp
+    
+    var liked : Bool = false
+    
+    var user : User?
+    
+    init(documentId: String, data: [String:Any]) {
+        self.documentId = documentId
+        self.userUid = data["userUid"] as? String ?? "no userUid"
+        self.postUid = data["postUid"] as? String ?? "no postUid"
+        self.commentText = data["commentText"] as? String ?? "no commentText"
         
         self.time = data["time"] as? Timestamp ?? Timestamp()
         
